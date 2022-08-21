@@ -24,7 +24,7 @@ module.exports.sendAttack = (req: Request, res: Response) => {
       newDefendignPokemonHealth: resultDefendignPokemonHealth > 0 ? resultDefendignPokemonHealth : 0,
     }
 
-    if (attackResponse.newDefendignPokemonHealth = 0) {
+    if (attackResponse.newDefendignPokemonHealth === 0) {
       //TODOCRH: save battle ranking and add players score
     }
 

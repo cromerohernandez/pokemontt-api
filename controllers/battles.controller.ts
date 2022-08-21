@@ -1,25 +1,33 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import createError from 'http-errors';
 
 import { getAttackDamage } from '../helpers/battles.helpers'
-import { IBattleMoveData } from '../interfaces/battle.interfaces'
+import { IAttackData, IAttackResponse, IBattleMoveData } from '../interfaces/battle.interfaces'
 
-//TODOCRH: ¿controller?
-module.exports.getAttackDamage = (req: Request, res: Response, next: NextFunction) => {
-  const { playerPokemon, opponentPokemon, playerCurrentMove } = req.body
+module.exports.sendAttack = (req: Request, res: Response) => {
+  const { attackingPokemon, defendingPokemon, attackMoveName } = req.body as IAttackData
+  const attackMove = attackingPokemon.moves.find((move: IBattleMoveData) => move.name === attackMoveName)
 
-  const playerMove = playerPokemon.moves.find((move: IBattleMoveData) => move.name === playerCurrentMove)
-
-  if (!playerMove) {
+  if (!attackMove) {
     throw createError(
       400,
       {
-        en: `${playerPokemon.name} doesn't have the ${playerCurrentMove} move available.`,
-        es: `${playerPokemon.name} no tiene disponible el ataque ${playerCurrentMove}.`
+        en: `${attackingPokemon.name} doesn't have the ${attackMoveName} move available.`,
+        es: `${attackingPokemon.name} no tiene disponible el ataque ${attackMoveName}.`
       }
     )
   } else {
-    const attackDamage = getAttackDamage(playerPokemon, opponentPokemon, playerMove)
-    res.status(200).json(attackDamage)
+    const attackDamage = Math.round(getAttackDamage(attackingPokemon, defendingPokemon, attackMove))
+    const resultDefendignPokemonHealth = defendingPokemon.hp - attackDamage
+    const attackResponse: IAttackResponse = {
+      damage: attackDamage,
+      newDefendignPokemonHealth: resultDefendignPokemonHealth > 0 ? resultDefendignPokemonHealth : 0,
+    }
+
+    if (attackResponse.newDefendignPokemonHealth = 0) {
+      //TODOCRH: save battle ranking and add players score
+    }
+
+    res.status(200).json(attackResponse)
   }
 }

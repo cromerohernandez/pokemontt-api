@@ -1,48 +1,48 @@
-import { IBattleAttackData, IBattleMoveData, IBattlePokemonData } from "../interfaces/battle.interfaces";
-const effectivenessAttackValues = require('../const/battle.const');
+import { IAttackParameters, IBattleMoveData, IBattlePokemonData } from '../interfaces/battle.interfaces';
+import { effectivenessAttackValues } from '../const/battle.const';
 
 export const getAttackDamage = (
-  playerPokemon: IBattlePokemonData,
-  opponentPokemon: IBattlePokemonData,
-  playerCurrentMove: IBattleMoveData
+  attackingPokemon: IBattlePokemonData,
+  defendingPokemon: IBattlePokemonData,
+  attackMove: IBattleMoveData
 ): number => {
   const {
     bonus,
     effectiveness,
     variation,
-    playerPokemonLevel,
-    playerPokemonAttack,
+    attackingPokemonLevel,
+    attackingPokemonAttack,
     movePower,
-    opponentPokemonDefense
-  } = getAttackData(playerPokemon, opponentPokemon, playerCurrentMove)
+    defendingPokemonDefense
+  } = _getAttackParameters(attackingPokemon, defendingPokemon, attackMove)
   const modifiers = 0.01 * bonus * effectiveness * variation
-  const attack = (0.2 * playerPokemonLevel + 1) * playerPokemonAttack * movePower
-  const defense = 25 * opponentPokemonDefense
+  const attack = (0.2 * attackingPokemonLevel + 1) * attackingPokemonAttack * movePower
+  const defense = 25 * defendingPokemonDefense
 
   return modifiers * ((attack / defense) + 2)
 }
 
-const getAttackData = (
-  playerPokemon: IBattlePokemonData,
-  opponentPokemon: IBattlePokemonData,
-  playerCurrentMove: IBattleMoveData
-): IBattleAttackData => {
+const _getAttackParameters = (
+  attackingPokemon: IBattlePokemonData,
+  defendingPokemon: IBattlePokemonData,
+  attackMove: IBattleMoveData
+): IAttackParameters => {
   return {
-    bonus: playerCurrentMove.type === playerPokemon.types[0] ? 1.5 : 1, //TODOCRH: review pokemon with two types
-    effectiveness: getAttackEffectiveness(playerPokemon.types, opponentPokemon.types[0]),
+    bonus: attackMove.type === attackingPokemon.types[0] ? 1.5 : 1,
+    effectiveness: _getAttackEffectiveness(attackMove.type, defendingPokemon.types),
     variation: Math.floor(Math.random() * (100 - 85) + 85),
-    playerPokemonLevel: Math.pow(playerPokemon.experience, 1/3),
-    playerPokemonAttack: playerPokemon.attack,
-    movePower: playerCurrentMove.power,
-    opponentPokemonDefense: opponentPokemon.defense
+    attackingPokemonLevel: Math.pow(attackingPokemon.experience, 1/3),
+    attackingPokemonAttack: attackingPokemon.attack,
+    movePower: attackMove.power,
+    defendingPokemonDefense: defendingPokemon.defense
   }
 }
 
-const getAttackEffectiveness = (playerPokemonTypes: string[], opponentPokemonType: string): number => {
+const _getAttackEffectiveness = (attackMoveType: string, defendingPokemonTypes: string[]): number => {
   const effectivenessResults: number[] = []
 
-  playerPokemonTypes.forEach(playerType => {
-    effectivenessResults.push(effectivenessAttackValues[playerType][opponentPokemonType])
+  defendingPokemonTypes.forEach((defendingPokemonType: string) => {
+    effectivenessResults.push(effectivenessAttackValues[attackMoveType][defendingPokemonType])
   })
 
   return effectivenessResults.reduce((acc, cur) => acc * cur, 1)

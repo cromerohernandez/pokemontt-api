@@ -1,5 +1,10 @@
 # dependencies
 /node_modules
 
+# testing
+
+# production
+/dist
+
 # misc
 .env

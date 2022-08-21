@@ -1,11 +1,22 @@
-export interface IBattleAttackData  {
+export interface IAttackData {
+  attackingPokemon: IBattlePokemonData,
+  defendingPokemon: IBattlePokemonData,
+  attackMoveName: string,
+}
+
+export interface IAttackParameters  {
   bonus: number,
   effectiveness: number,
   variation: number,
-  playerPokemonLevel: number,
-  playerPokemonAttack: number,
+  attackingPokemonLevel: number,
+  attackingPokemonAttack: number,
   movePower: number,
-  opponentPokemonDefense: number,
+  defendingPokemonDefense: number,
+}
+
+export interface IAttackResponse {
+  damage: number,
+  newDefendignPokemonHealth: number,
 }
 
 export interface IBattleMoveData {
@@ -44,6 +55,7 @@ export interface ITypesValues {
   dragon: INestedTypesValues,
   dark: INestedTypesValues,
   fairy: INestedTypesValues,
+  [key: string]: INestedTypesValues,
 }
 
 interface INestedTypesValues {
@@ -65,4 +77,5 @@ interface INestedTypesValues {
   dragon: number,
   dark: number,
   fairy: number,
+  [key: string]: number,
 }

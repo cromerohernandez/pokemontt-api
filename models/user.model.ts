@@ -1,13 +1,6 @@
 import { Schema, model } from 'mongoose'
 
-interface IUser {
-  username: string,
-  password: string,
-  score: number,
-  language: string,
-  theming: string,
-  render: string,
-}
+import { IUser } from '../interfaces/user.interfaces'
 
 const userSchema = new Schema<IUser>({
   username: {

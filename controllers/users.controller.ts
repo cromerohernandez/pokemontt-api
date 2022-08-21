@@ -1,10 +1,10 @@
-const { Request, Response, NextFunction } = require('express');
-const createError = require('http-errors');
+import { Request, Response, NextFunction } from 'express';
+import createError from 'http-errors';
 
-const User = require('../models/user.model');
 import { IUser } from '../interfaces/user.interfaces';
+const User = require('../models/user.model');
 
-module.exports.create = (req: typeof Request, res: typeof Response, next: typeof NextFunction) => {
+module.exports.create = (req: Request, res: Response, next: NextFunction) => {
   const { username, password } = req.body
 
   const user = new User({
@@ -17,10 +17,10 @@ module.exports.create = (req: typeof Request, res: typeof Response, next: typeof
     .catch(next)
 }
 
-module.exports.updateScore = (req: typeof Request, res: typeof Response, next: typeof NextFunction) => {
-  User.findOne({ _id: req.currentUser.id })
+module.exports.updateScore = (req: Request, res: Response, next: NextFunction) => {
+  User.findOne({ _id: req.body.currentUser.id })
     .then((user: typeof User) => {
-      if(!user) {
+      if (!user) {
         throw createError(404, {en: 'User not found', es: 'Usuario no encontrado'})
       } else {
         const newScore = user.score + req.body.scoreIncrease
@@ -35,12 +35,12 @@ module.exports.updateScore = (req: typeof Request, res: typeof Response, next: t
 
 }
 
-module.exports.updateSettings = (req: typeof Request, res: typeof Response, next: typeof NextFunction) => {
+module.exports.updateSettings = (req: Request, res: Response, next: NextFunction) => {
   const settingsKeys = ['language', 'theming', 'render']
 
-  User.findOne({ _id: req.currentUser.id })
+  User.findOne({ _id: req.body.currentUser.id })
     .then((user: typeof User) => {
-      if(!user) {
+      if (!user) {
         throw createError(404, {en: 'User not found', es: 'Usuario no encontrado'})
       } else {
         settingsKeys.forEach(key => {
@@ -52,6 +52,27 @@ module.exports.updateSettings = (req: typeof Request, res: typeof Response, next
         user.save()
           .then((updatedUser: IUser) => res.status(200).json(updatedUser))
           .catch(next)
+      }
+    })
+    .catch(next)
+}
+
+module.exports.getUserRanking = (req: Request, res: Response, next: NextFunction) => {
+  User.find({})
+    .sort({ score: 'asc'})
+    .limit(10)
+    .then((users: typeof User[]) => {
+      if (!users) {
+        throw createError(404, {en: 'Users not found', es: 'Usuarios no encontrados'})
+      } else {
+        users.forEach(user => {
+          return {
+            username: user.username,
+            score: user.score
+          }
+        })
+
+        res.status(200).json(users)
       }
     })
     .catch(next)

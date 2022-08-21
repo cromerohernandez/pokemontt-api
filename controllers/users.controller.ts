@@ -56,3 +56,24 @@ module.exports.updateSettings = (req: typeof Request, res: typeof Response, next
     })
     .catch(next)
 }
+
+module.exports.getUserRanking = (req: typeof Request, res: typeof Response, next: typeof NextFunction) => {
+  User.find({})
+    .sort({ score: 'asc'})
+    .limit(10)
+    .then((users: typeof User[]) => {
+      if(!users) {
+        throw createError(404, {en: 'Users not found', es: 'Usuarios no encontrados'})
+      } else {
+        users.forEach(user => {
+          return {
+            username: user.username,
+            score: user.score
+          }
+        })
+
+        res.status(200).json(users)
+      }
+    })
+    .catch(next)
+}

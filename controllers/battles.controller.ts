@@ -61,12 +61,16 @@ module.exports.sendAttack = (req: Request, res: Response) => {
     const resultDefendignPokemonHealth = defendingPokemon.hpInBattle - attackDamage
     const attackResponse: IAttackResponse = {
       damage: attackDamage,
+      usedMoveName: attackMove.name,
       newDefendignPokemonHealth: resultDefendignPokemonHealth > 0 ? resultDefendignPokemonHealth : 0,
     }
 
     if (attackResponse.newDefendignPokemonHealth === 0) {
-      const attackingPokemonScoreIncrease = winnerPointsInComputerBattle + defendingPokemon.hp - defendingPokemon.hpInBattle
-      const defendingPokemonScoreIncrease = attackingPokemon.hp - attackingPokemon.hpInBattle
+      const attackingPokemonScoreIncrease = winnerPointsInComputerBattle + defendingPokemon.hp
+      const defendingPokemonScoreIncrease = attackingPokemon.hp - attackingPokemon.hpInBattle //TODOCRH: review (attackingPokemon.hp don't update (useState))
+
+      attackResponse.attackingPokemonScoreIncrease = attackingPokemonScoreIncrease
+      attackResponse.defendingPokemonScoreIncrease = defendingPokemonScoreIncrease
 
       //TODOCRH: save battle ranking and players score
     }

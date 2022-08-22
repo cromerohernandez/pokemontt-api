@@ -18,7 +18,10 @@ export interface IAttackParameters  {
 
 export interface IAttackResponse {
   damage: number,
+  usedMoveName: string,
   newDefendignPokemonHealth: number,
+  attackingPokemonScoreIncrease?: number,
+  defendingPokemonScoreIncrease?: number,
 }
 
 export interface IBattle {

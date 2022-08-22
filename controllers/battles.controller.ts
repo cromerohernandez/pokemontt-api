@@ -50,11 +50,7 @@ module.exports.sendAttack = (req: Request, res: Response) => {
 
   if (!attackMove) {
     throw createError(
-      400,
-      {
-        en: `${attackingPokemon.name} doesn't have the ${attackMoveName} move available.`,
-        es: `${attackingPokemon.name} no tiene disponible el ataque ${attackMoveName}.`
-      }
+      400, `${attackingPokemon.name} doesn't have the ${attackMoveName} move available.`
     )
   } else {
     const attackDamage = Math.round(getAttackDamage(attackingPokemon, defendingPokemon, attackMove))

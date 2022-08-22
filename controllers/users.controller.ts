@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import createError from 'http-errors';
 
 import { IUser } from '../interfaces/user.interfaces';
+
 const User = require('../models/user.model');
 
 module.exports.create = (req: Request, res: Response, next: NextFunction) => {
@@ -17,7 +18,7 @@ module.exports.create = (req: Request, res: Response, next: NextFunction) => {
     .catch(next)
 }
 
-module.exports.updateScore = (req: Request, res: Response, next: NextFunction) => {
+module.exports.updateScore = (req: Request, res: Response, next: NextFunction) => { //TODOCRH: review
   User.findOne({ _id: req.body.currentUser.id })
     .then((user: typeof User) => {
       if (!user) {
@@ -57,7 +58,7 @@ module.exports.updateSettings = (req: Request, res: Response, next: NextFunction
     .catch(next)
 }
 
-module.exports.getUserRanking = (req: Request, res: Response, next: NextFunction) => {
+module.exports.getUsersRanking = (req: Request, res: Response, next: NextFunction) => {
   User.find({})
     .sort({ score: 'asc'})
     .limit(10)

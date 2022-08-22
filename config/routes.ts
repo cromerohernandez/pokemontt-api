@@ -6,11 +6,11 @@ const battlesController = require('../controllers/battles.controller')
 
 //users
 router.post('/users/new', usersController.create)
-router.patch('/users/update/score', usersController.updateScore)
+router.get('/users/ranking', usersController.getUsersRanking)
 router.patch('/users/update/settings', usersController.updateSettings)
-router.get('/users/ranking', usersController.getUserRanking)
 
 //battles
+router.get('/battles/user', battlesController.getUserBattles)
 router.post('/battles/attack', battlesController.sendAttack)
 
 module.exports = router

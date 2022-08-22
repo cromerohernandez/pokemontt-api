@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { IErrorData } from './interfaces/app.interfaces';
 
 require('dotenv').config();
 
@@ -6,10 +7,10 @@ require('dotenv').config();
 const createError = require('http-errors');
 const express = require('express');
 //const logger = require('morgan');
-//const path = require('path');
+const path = require('path');
 const mongoose = require('mongoose');
 
-//require('./config/db.config');
+require('./config/db.config');
 
 const cors = require('./config/cors.config');
 const session = require('./config/session.config');
@@ -23,7 +24,7 @@ app.use(cors);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 //app.use(cookieParser());
-//app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 //app.use(session);
 
 /*app.use((req: typeof IRequest, res: Response, next: any) => {
@@ -43,13 +44,16 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // error handler
-/*app.use(function (error: { status: any; errors: { [x: string]: { message: any; }; }; code: number; keyValue: {}; message: any; }, req: Request, res: Response, next: NextFunction) {
+app.use(function (error: { status: any; errors: { [x: string]: { message: any; }; }; code: number; keyValue: {}; message: any; }, req: Request, res: Response, next: NextFunction) {
   //console.error('-' * 1000) //TODOCRH: review
   console.error(error);
 
   res.status(error.status || 500);
 
-  const data = {}
+  const data: IErrorData = {
+    errors: undefined,
+    message: undefined
+  }
 
   if (error instanceof mongoose.Error.ValidationError) {
     res.status(400);
@@ -64,12 +68,12 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   } else if (error.code === 11000) {
     res.status(500)
     const key = Object.keys(error.keyValue)[0]
-    data.errors = { [key]: `${key} already exists` }
+    data.errors = { [key]: {message: `${key} already exists`} }
   }
 
   data.message = error.message;
   res.json(data);
-});*/
+});
 
 /** 
  * Listen on provided port

@@ -1,4 +1,7 @@
 /*const mongoose = require('mongoose')
+=======
+const mongoose = require('mongoose')
+>>>>>>> 776cf1264c07d3ff662cb3cb00bb9b5bd6c72fae
 
 let mongodbConnection = (process.env.NODE_ENV === 'dev') ? 'mongodb://localhost:27017/pokemontt' : process.env.MONGODB_URI
 
@@ -11,4 +14,5 @@ process.on('SIGINT', () => {
       console.log('Mongoose disconnected on app termination')
       process.exit(0)
   })
+<<<<<<< HEAD
 })*/

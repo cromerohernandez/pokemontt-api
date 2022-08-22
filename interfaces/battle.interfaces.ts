@@ -1,3 +1,5 @@
+import { Types } from 'mongoose';
+
 export interface IAttackData {
   attackingPokemon: IBattlePokemonData,
   defendingPokemon: IBattlePokemonData,
@@ -19,6 +21,14 @@ export interface IAttackResponse {
   newDefendignPokemonHealth: number,
 }
 
+export interface IBattle {
+  id?: Types.ObjectId | null,
+  winner: Types.ObjectId | null,
+  winnerScoreIncrement: number,
+  looser: Types.ObjectId,
+  looserScoreIncrement: number,
+}
+
 export interface IBattleMoveData {
   name: string,
   power: number,
@@ -30,6 +40,7 @@ export interface IBattlePokemonData {
   types: string[],
   experience: number,
   hp: number,
+  hpInBattle: number,
   attack: number,
   defense: number,
   moves: IBattleMoveData[],

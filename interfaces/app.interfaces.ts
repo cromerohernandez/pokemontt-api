@@ -3,6 +3,14 @@ export interface IRequest { //TODOCRH: it is necessary?
   session: any
 }
 
+export interface IError {
+  status: any;
+  errors: IErrors;
+  code: number;
+  keyValue: {};
+  message: IMessage,
+}
+
 export interface IErrorData {
   errors: IErrors | undefined,
   message: IMessage | undefined,
@@ -16,4 +24,3 @@ interface IMessage {
   [x: string]: string
 }
 
-export interface IError { status: any; errors: IErrors; code: number; keyValue: {}; message: any }

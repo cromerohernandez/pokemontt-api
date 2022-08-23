@@ -8,11 +8,13 @@ import { winnerPointsInComputerBattle } from '../const/battle.const'
 const Battle = require('../models/battle.model');
 
 module.exports.create = (req: Request, res: Response, next: NextFunction) => {
-  const { winner, loser } = req.body
+  const { winner, winnerScoreIncrement, loser, loserScoreIncrement } = req.body
  
   const battle = new Battle({
     winner: winner,
-    loser: loser
+    winnerScoreIncrement: winnerScoreIncrement,
+    loser: loser,
+    loserScoreIncrement: loserScoreIncrement,
   })
 
   battle.save()
@@ -23,7 +25,7 @@ module.exports.create = (req: Request, res: Response, next: NextFunction) => {
 module.exports.getUserBattles = (req: Request, res: Response, next: NextFunction) => {
   const userId = req.body.currentUser.id
 
-  Battle.find({ $or: [ {winner: userId}, {looser: userId} ] })
+  Battle.find({ $or: [ {winner: userId}, {loser: userId} ] })
     .sort({ timestamps: 'asc'})
     .then((battles: typeof Battle[]) => {
       if (!battles) {
@@ -33,8 +35,8 @@ module.exports.getUserBattles = (req: Request, res: Response, next: NextFunction
           const win = battle.winner === userId
           return {
             win: win,
-            opponent: win ? battle.looser : battle.winner,
-            userScoreIncrement: win ? battle.winnerScoreIncrement : battle.looserScoreIncrement,
+            opponent: win ? battle.loser : battle.winner,
+            userScoreIncrement: win ? battle.winnerScoreIncrement : battle.loserScoreIncrement,
           }
         })
 
@@ -68,7 +70,19 @@ module.exports.sendAttack = (req: Request, res: Response) => {
       attackResponse.attackingPokemonScoreIncrease = attackingPokemonScoreIncrease
       attackResponse.defendingPokemonScoreIncrease = defendingPokemonScoreIncrease
 
-      //TODOCRH: save battle ranking and players score
+      //save battle data
+      const battle = new Battle({
+        winner: attackingPokemon.name,
+        winnerScoreIncrement: attackingPokemonScoreIncrease,
+        loser: defendingPokemon.name,
+        loserScoreIncrement: defendingPokemonScoreIncrease,
+      })
+    
+      battle.save()
+        .then(() => res.status(201)) //TODOCRH: review
+        .catch(() => console.log('CRHERROR')) //TODOCEH: (next)
+
+      //TODOCRH: save players score
     }
 
     res.status(200).json(attackResponse)

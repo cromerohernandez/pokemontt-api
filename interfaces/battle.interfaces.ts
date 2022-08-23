@@ -26,10 +26,10 @@ export interface IAttackResponse {
 
 export interface IBattle {
   id?: Types.ObjectId | null,
-  winner: Types.ObjectId | null,
+  winner: string | null , //TODOCRH: Types.ObjectId | null,
   winnerScoreIncrement: number,
-  looser: Types.ObjectId,
-  looserScoreIncrement: number,
+  loser: string | null , //TODOCRH: Types.ObjectId | null,
+  loserScoreIncrement: number,
 }
 
 export interface IBattleMoveData {

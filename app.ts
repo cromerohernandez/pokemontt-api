@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { IErrorData } from './interfaces/app.interfaces';
+import { IError, IErrorData } from './interfaces/app.interfaces';
 
 require('dotenv').config();
 
@@ -44,7 +44,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // error handler
-app.use(function (error: { status: any; errors: { [x: string]: { message: any; }; }; code: number; keyValue: {}; message: any; }, req: Request, res: Response, next: NextFunction) {
+app.use(function (error: IError, req: Request, res: Response, next: NextFunction) {
   //console.error('-' * 1000) //TODOCRH: review
   console.error(error);
 

@@ -1,4 +1,4 @@
-export interface IRequest { //TODOCRH: it is necessary?
+export interface IRequest {
   currentUser: any,
   session: any
 }
@@ -24,3 +24,10 @@ interface IMessage {
   [x: string]: string
 }
 
+export interface ISessionRequest extends Express.Request {
+  body: { username: any; password: any; };
+  session: {
+    user: [any],
+    destroy: () => void,
+  }
+}

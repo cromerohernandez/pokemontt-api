@@ -1,6 +1,9 @@
-import { Schema, model } from 'mongoose'
+import { model, Schema } from 'mongoose';
+const bcrypt = require('bcrypt')
 
-import { IUser } from '../interfaces/user.interfaces'
+import { checkPassword, hashPassword } from '../helpers/models.helpers'
+import { IUser } from '../interfaces/user.interfaces';
+import { SALT_WORK_FACTOR } from '../const/user.const';
 
 const userSchema = new Schema<IUser>({
   username: {
@@ -47,6 +50,26 @@ const userSchema = new Schema<IUser>({
     }
   }
 })
+
+userSchema.pre('save', function (next) {
+  if (this.isModified('password')) {
+    bcrypt.genSalt(SALT_WORK_FACTOR)
+    .then((salt: string) => {
+      return bcrypt.hash(this.password, salt)
+        .then((hash: string) => {
+          this.password = hash
+          next()
+        })
+    })
+    .catch((error: any) => next(error))
+  } else {
+    next()
+  }
+})
+
+userSchema.methods.checkUserPassword = function (password: string): boolean {
+  return checkPassword(password, this.password)
+}
 
 const User = model<IUser>('User', userSchema)
 

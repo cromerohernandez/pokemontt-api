@@ -1,5 +1,5 @@
 import { IAttackParameters, IBattleMoveData, IBattlePokemonData } from '../interfaces/battle.interfaces';
-import { effectivenessAttackValues } from '../const/battle.const';
+import { EFFECTIVENESS_ATTACK_VALUES } from '../const/battle.const';
 
 export const getAttackDamage = (
   attackingPokemon: IBattlePokemonData,
@@ -42,7 +42,7 @@ const _getAttackEffectiveness = (attackMoveType: string, defendingPokemonTypes: 
   const effectivenessResults: number[] = []
 
   defendingPokemonTypes.forEach((defendingPokemonType: string) => {
-    effectivenessResults.push(effectivenessAttackValues[attackMoveType][defendingPokemonType])
+    effectivenessResults.push(EFFECTIVENESS_ATTACK_VALUES[attackMoveType][defendingPokemonType])
   })
 
   return effectivenessResults.reduce((acc, cur) => acc * cur, 1)

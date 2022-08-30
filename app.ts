@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { IError, IErrorData } from './interfaces/app.interfaces';
+import { IError, IErrorData, IRequest } from './interfaces/app.interfaces';
 
 require('dotenv').config();
 
@@ -25,12 +25,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 //app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-//app.use(session);
+app.use(session);
 
-/*app.use((req: typeof IRequest, res: Response, next: any) => {
+app.use((req: IRequest, res: Response, next: any) => {
   req.currentUser = req.session.user
   next()
-});*/
+});
 
 /**
  * Configure routes

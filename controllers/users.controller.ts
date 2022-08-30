@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import createError from 'http-errors';
 
+import { ISessionRequest } from '../interfaces/app.interfaces';
 import { IUser } from '../interfaces/user.interfaces';
 
 const User = require('../models/user.model');
@@ -14,7 +15,7 @@ module.exports.create = (req: Request, res: Response, next: NextFunction) => {
   })
 
   user.save()
-    .then(() => res.status(201))
+    .then((newUser: IUser) => res.status(201).json(newUser.id))
     .catch(next)
 }
 
@@ -33,7 +34,6 @@ module.exports.updateScore = (req: Request, res: Response, next: NextFunction) =
       }
     })
     .catch(next)
-
 }
 
 module.exports.updateSettings = (req: Request, res: Response, next: NextFunction) => {
@@ -77,4 +77,36 @@ module.exports.getUsersRanking = (req: Request, res: Response, next: NextFunctio
       }
     })
     .catch(next)
+}
+
+
+module.exports.login = (req: ISessionRequest, res: Response, next: NextFunction) => {
+  const { username, password } = req.body
+  
+  if (!username || !password) {
+    throw createError(400, 'missing credentials')
+  }
+
+  User.findOne({ username: username })
+    .then((user: typeof User) => {
+      if (!user) {
+        throw createError(404, 'invalid username or password')
+      } else {
+        return user.checkUserPassword(password)
+          .then((match: boolean) => {
+            if (!match) {
+              throw createError(400, 'invalid username or password')
+            } else {
+              req.session.user = user
+              res.json(user)
+            }
+          })
+      }
+    })
+    .catch(next)
+}
+
+module.exports.logout = (req: ISessionRequest, res: Response) => {
+  req.session.destroy()
+  res.status(204).json()
 }

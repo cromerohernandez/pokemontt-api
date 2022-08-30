@@ -3,7 +3,7 @@ import createError from 'http-errors';
 
 import { getAttackDamage } from '../helpers/battles.helpers'
 import { IAttackData, IAttackResponse, IBattleMoveData } from '../interfaces/battle.interfaces'
-import { winnerPointsInComputerBattle } from '../const/battle.const'
+import { WINNER_POINTS_POINTS_IN_COMPUTER_BATTLE } from '../const/battle.const'
 
 const Battle = require('../models/battle.model');
 
@@ -46,7 +46,7 @@ module.exports.getUserBattles = (req: Request, res: Response, next: NextFunction
     .catch(next)
 }
 
-module.exports.sendAttack = (req: Request, res: Response) => {
+module.exports.sendAttack = (req: Request, res: Response, next: NextFunction) => {
   const { attackingPokemon, defendingPokemon, attackMoveName } = req.body as IAttackData
   const attackMove = attackingPokemon.moves.find((move: IBattleMoveData) => move.name === attackMoveName)
 
@@ -64,7 +64,7 @@ module.exports.sendAttack = (req: Request, res: Response) => {
     }
 
     if (attackResponse.newDefendignPokemonHealth === 0) {
-      const attackingPokemonScoreIncrease = winnerPointsInComputerBattle + defendingPokemon.hp
+      const attackingPokemonScoreIncrease = WINNER_POINTS_POINTS_IN_COMPUTER_BATTLE + defendingPokemon.hp
       const defendingPokemonScoreIncrease = attackingPokemon.hp - attackingPokemon.hpInBattle //TODOCRH: review (attackingPokemon.hp don't update (useState))
 
       attackResponse.attackingPokemonScoreIncrease = attackingPokemonScoreIncrease
@@ -80,7 +80,7 @@ module.exports.sendAttack = (req: Request, res: Response) => {
     
       battle.save()
         .then(() => res.status(201)) //TODOCRH: review
-        .catch(() => console.log('CRHERROR')) //TODOCEH: (next)
+        .catch(next)
 
       //TODOCRH: save players score
     }

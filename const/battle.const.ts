@@ -1,8 +1,8 @@
 import { ITypesValues } from '../interfaces/battle.interfaces'
 
-export const winnerPointsInComputerBattle = 1000
+export const WINNER_POINTS_POINTS_IN_COMPUTER_BATTLE = 1000
 
-export const effectivenessAttackValues: ITypesValues = {
+export const EFFECTIVENESS_ATTACK_VALUES: ITypesValues = {
   normal: {
     normal: 1,
     fire: 1,

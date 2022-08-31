@@ -1,17 +1,17 @@
-import mongoose, { Schema, model } from 'mongoose'
+import { model, Schema, Types } from 'mongoose'
 
 import { IBattle } from '../interfaces/battle.interfaces'
 
 const userBattle = new Schema<IBattle>({
-  winner: {
-    type: String, //TODOCRH: mongoose.Schema.Types.ObjectId,
+  winnerId: {
+    type: Types.ObjectId,
   },
   winnerScoreIncrement: {
     type: Number,
     default: 0
   },
-  loser: {
-    type: String, //TODOCRH: mongoose.Schema.Types.ObjectId,
+  loserId: {
+    type: Types.ObjectId,
   },
   loserScoreIncrement: {
     type: Number,

@@ -43,20 +43,20 @@ module.exports.updateSettings = (req: Request, res: Response, next: NextFunction
 
 module.exports.getUsersRanking = (req: Request, res: Response, next: NextFunction) => {
   User.find({})
-    .sort({ score: 'asc'})
+    .sort({ score: 'desc'})
     .limit(10)
     .then((users: typeof User[]) => {
       if (!users) {
         throw createError(404, {en: 'Users not found', es: 'Usuarios no encontrados'})
       } else {
-        users.forEach(user => {
+        const mappedUsers = users.map(user => {
           return {
             username: user.username,
             score: user.score
           }
         })
 
-        res.status(200).json(users)
+        res.status(200).json(mappedUsers)
       }
     })
     .catch(next)

@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose';
 const bcrypt = require('bcrypt')
 
-import { checkPassword, hashPassword } from '../helpers/models.helpers'
+import { checkPassword } from '../helpers/models.helpers'
 import { IUser } from '../interfaces/user.interfaces';
 import { SALT_WORK_FACTOR } from '../const/user.const';
 

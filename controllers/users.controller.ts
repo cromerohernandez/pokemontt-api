@@ -19,23 +19,6 @@ module.exports.create = (req: Request, res: Response, next: NextFunction) => {
     .catch(next)
 }
 
-module.exports.updateScore = (req: Request, res: Response, next: NextFunction) => { //TODOCRH: review
-  User.findOne({ _id: req.body.currentUser.id })
-    .then((user: typeof User) => {
-      if (!user) {
-        throw createError(404, {en: 'User not found', es: 'Usuario no encontrado'})
-      } else {
-        const newScore = user.score + req.body.scoreIncrease
-        user.score = newScore
-
-        user.save()
-          .then((updatedUser: IUser) => res.status(200).json(updatedUser.score))
-          .catch(next)
-      }
-    })
-    .catch(next)
-}
-
 module.exports.updateSettings = (req: Request, res: Response, next: NextFunction) => {
   const settingsKeys = ['language', 'theming', 'render']
 

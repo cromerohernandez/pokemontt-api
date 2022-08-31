@@ -1,26 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
 import createError from 'http-errors';
+import { Types } from 'mongoose';
 
-import { getAttackDamage } from '../helpers/battles.helpers'
-import { IAttackData, IAttackResponse, IBattleMoveData } from '../interfaces/battle.interfaces'
-import { WINNER_POINTS_POINTS_IN_COMPUTER_BATTLE } from '../const/battle.const'
+import { getAttackDamage } from '../helpers/battles.helpers';
+import { IAttackData, IAttackResponse, IBattleMoveData } from '../interfaces/battle.interfaces';
+import { WINNER_POINTS_POINTS_IN_COMPUTER_BATTLE } from '../const/battle.const';
+
+import { IUser } from '../interfaces/user.interfaces';
 
 const Battle = require('../models/battle.model');
-
-module.exports.create = (req: Request, res: Response, next: NextFunction) => {
-  const { winner, winnerScoreIncrement, loser, loserScoreIncrement } = req.body
- 
-  const battle = new Battle({
-    winner: winner,
-    winnerScoreIncrement: winnerScoreIncrement,
-    loser: loser,
-    loserScoreIncrement: loserScoreIncrement,
-  })
-
-  battle.save()
-    .then(() => res.status(201)) //TODOCRH: review
-    .catch(next)
-}
+const User = require('../models/user.model');
 
 module.exports.getUserBattles = (req: Request, res: Response, next: NextFunction) => {
   const userId = req.body.currentUser.id
@@ -70,21 +59,57 @@ module.exports.sendAttack = (req: Request, res: Response, next: NextFunction) =>
       attackResponse.attackingPokemonScoreIncrease = attackingPokemonScoreIncrease
       attackResponse.defendingPokemonScoreIncrease = defendingPokemonScoreIncrease
 
+      //save new player scores
+      let DDBBplayersDataToSave: Promise<IUser>[] = []
+      const battlePokemon = [
+        {
+          id: attackingPokemon.userId ? new Types.ObjectId(attackingPokemon.userId) : null,
+          scoreIncrement: attackingPokemonScoreIncrease,
+        },
+        {
+          id: defendingPokemon.userId ? new Types.ObjectId(defendingPokemon.userId) : null,
+          scoreIncrement: defendingPokemonScoreIncrease,
+        }
+      ];
+
+      battlePokemon.forEach(pokemon => {
+        if (pokemon.id) {
+          User.findOne({ _id: pokemon.id })
+          .then((user: typeof User) => {
+            if (!user) {
+              throw createError(404, {en: 'User not found', es: 'Usuario no encontrado'})
+            } else {
+              const newScore = user.score + pokemon.scoreIncrement
+              user.score = newScore
+
+              DDBBplayersDataToSave.push(
+                user.save()
+              )
+            }
+          })
+          .catch(next)
+        }
+      })
+
       //save battle data
       const battle = new Battle({
-        winner: attackingPokemon.name,
+        winnerId: attackingPokemon.userId ?? null,
         winnerScoreIncrement: attackingPokemonScoreIncrease,
-        loser: defendingPokemon.name,
+        loserId: defendingPokemon.userId ?? null,
         loserScoreIncrement: defendingPokemonScoreIncrease,
       })
-    
-      battle.save()
-        .then(() => res.status(201)) //TODOCRH: review
+
+      //save to DDBB and respond
+      Promise.all([
+        battle.save(),
+        ...DDBBplayersDataToSave
+      ])
+        .then(() => {
+          res.status(200).json(attackResponse)
+        })
         .catch(next)
-
-      //TODOCRH: save players score
+    } else {
+      res.status(200).json(attackResponse)
     }
-
-    res.status(200).json(attackResponse)
   }
 }

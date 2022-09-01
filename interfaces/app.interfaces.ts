@@ -1,6 +1,6 @@
 export interface IRequest {
-  currentUser: any,
-  session: any
+  body: any,
+  session: any,
 }
 
 export interface IError {

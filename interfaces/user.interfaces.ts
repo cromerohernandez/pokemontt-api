@@ -6,6 +6,6 @@ export interface IUser {
   password: string,
   score: number,
   language: string,
-  theming: string,
+  theme: string,
   render: string,
 }

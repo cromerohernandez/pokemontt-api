@@ -20,7 +20,7 @@ module.exports.create = (req: Request, res: Response, next: NextFunction) => {
 }
 
 module.exports.updateSettings = (req: Request, res: Response, next: NextFunction) => {
-  const settingsKeys = ['language', 'theming', 'render']
+  const settingsKeys = ['language', 'theme', 'render']
 
   User.findOne({ _id: req.body.currentUser.id })
     .then((user: typeof User) => {

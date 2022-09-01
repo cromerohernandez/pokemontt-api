@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session);
 
 app.use((req: IRequest, res: Response, next: any) => {
-  req.currentUser = req.session.user
+  req.body.currentUser = req.session.user
   next()
 });
 

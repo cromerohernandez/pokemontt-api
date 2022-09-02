@@ -22,6 +22,8 @@ export interface IAttackResponse {
   newDefendignPokemonHealth: number,
   attackingPokemonScoreIncrease?: number,
   defendingPokemonScoreIncrease?: number,
+  newAttackingPokemonScore?: number,
+  newDefendingPokemonScore?: number,
 }
 
 export interface IBattle {

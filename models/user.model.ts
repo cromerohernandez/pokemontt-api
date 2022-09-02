@@ -8,7 +8,7 @@ import { SALT_WORK_FACTOR } from '../const/user.const';
 const userSchema = new Schema<IUser>({
   username: {
     type: String,
-    required: [true, 'username is required'],
+    required: [true, 'INVALID_PASSWORD'],
     unique: true,
     inmutable: true,
     trim: true,
@@ -16,8 +16,8 @@ const userSchema = new Schema<IUser>({
   },
   password: {
     type: String,
-    required: [true, 'password is required'],
-    minlength: [6, 'password needs at least 6 chars']
+    required: [true, 'INVALID_PASSWORD'],
+    minlength: [6, 'INVALID_PASSWORD']
   },
   score: {
     type: Number,
@@ -51,6 +51,7 @@ const userSchema = new Schema<IUser>({
   }
 })
 
+//hash password
 userSchema.pre('save', function (next) {
   if (this.isModified('password')) {
     bcrypt.genSalt(SALT_WORK_FACTOR)
@@ -67,6 +68,16 @@ userSchema.pre('save', function (next) {
   }
 })
 
+//custom error to duplicated username
+userSchema.post('save', (error: any, doc: any, next: any) => {
+  if (error.name === 'MongoServerError' && error.code === 11000) {
+    next(new Error('USERNAME_ALREADY_EXISTS'))
+  } else {
+    next(error)
+  }
+});
+
+//check hashed password
 userSchema.methods.checkUserPassword = function (password: string): boolean {
   return checkPassword(password, this.password)
 }

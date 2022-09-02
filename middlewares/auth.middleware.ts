@@ -8,13 +8,13 @@ module.exports.isAuthenticated = (req: ISessionRequest, res: Response, next: Nex
   if (req.session.user) {
     next()
   } else {
-    next(createError(401, 'user is not authenticated'))
+    next(createError(401, 'USER_NOT_AUTHENTICATED'))
   }
 };
 
 module.exports.isNotAuthenticated = (req: ISessionRequest, res: Response, next: NextFunction) => {
   if (req.session.user) {
-    next(createError(403, 'user is already authenticated'))
+    next(createError(403, 'USER_ALREADY_AUTHENTICATED'))
   } else {
     next()
   }

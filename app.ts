@@ -64,7 +64,7 @@ app.use(function (error: IError, req: Request, res: Response, next: NextFunction
 
     data.errors = error.errors
   } else if (error instanceof mongoose.Error.CastError) {
-    error = createError(404, 'Resource not found')
+    error = createError(404, 'RESOURCE_NOT_FOUND')
   } else if (error.code === 11000) {
     res.status(500)
     const key = Object.keys(error.keyValue)[0]

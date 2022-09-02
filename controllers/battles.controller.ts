@@ -65,10 +65,12 @@ module.exports.sendAttack = (req: Request, res: Response, next: NextFunction) =>
         {
           id: attackingPokemon.userId ? new Types.ObjectId(attackingPokemon.userId) : null,
           scoreIncrement: attackingPokemonScoreIncrease,
+          battleAction: 'attack',
         },
         {
           id: defendingPokemon.userId ? new Types.ObjectId(defendingPokemon.userId) : null,
           scoreIncrement: defendingPokemonScoreIncrease,
+          battleAction: 'defense',
         }
       ];
 
@@ -81,6 +83,14 @@ module.exports.sendAttack = (req: Request, res: Response, next: NextFunction) =>
             } else {
               const newScore = user.score + pokemon.scoreIncrement
               user.score = newScore
+
+              if(pokemon.battleAction === 'attack') {
+                attackResponse.newAttackingPokemonScore = newScore
+              }
+
+              if(pokemon.battleAction === 'defense') {
+                attackResponse.newDefendingPokemonScore = newScore
+              }
 
               DDBBplayersDataToSave.push(
                 user.save()

@@ -80,7 +80,9 @@ module.exports.login = (req: ISessionRequest, res: Response, next: NextFunction)
             if (!match) {
               throw createError(400, 'INVALID_LOGIN')
             } else {
+              console.log('CRH-TEST-1', req.session)
               req.session.user = user
+              console.log('CRH-TEST-2', req.session)
               res.json(user)
             }
           })

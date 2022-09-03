@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { IError, IErrorData, IRequest } from './interfaces/app.interfaces';
+import { IError, IErrorData, IRequest, ISessionRequest } from './interfaces/app.interfaces';
 
 require('dotenv').config();
 
@@ -27,7 +27,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session);
 
-app.use((req: IRequest, res: Response, next: any) => {
+app.use((req: ISessionRequest, res: Response, next: any) => {
   console.log('CRH-req-app', req.session)
   req.body.currentUser = req.session.user
   next()

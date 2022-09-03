@@ -30,4 +30,5 @@ export interface ISessionRequest extends Express.Request {
     user: [any],
     destroy: () => void,
   }
+  user: any
 }

@@ -13,7 +13,7 @@ module.exports = session({
   cookie: {
     secure: false,
     httpOnly: true,
-    maxAge: SESSION_MAX_AGE_SECONDS * 1000 
+    maxAge: SESSION_MAX_AGE_SECONDS * 1000
   },
   store: new MongoStore({
     mongoUrl: mongodbConnection,

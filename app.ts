@@ -3,7 +3,7 @@ import { IError, IErrorData, IRequest } from './interfaces/app.interfaces';
 
 require('dotenv').config();
 
-//const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 const createError = require('http-errors');
 const express = require('express');
 const logger = require('morgan');
@@ -23,11 +23,12 @@ app.use(cors);
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-//app.use(cookieParser());
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session);
 
 app.use((req: IRequest, res: Response, next: any) => {
+  console.log('CRH-req-app', req)
   req.body.currentUser = req.session.user
   next()
 });

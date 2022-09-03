@@ -10,7 +10,7 @@ const createError = require('http-errors');
  * @param next NextFunction
  */
 module.exports.isAuthenticated = (req: ISessionRequest, res: Response, next: NextFunction) => {
-  console.log('CRH-req-isAuthenticated', req)
+  console.log('CRH-req-isAuthenticated', req.session)
 
   if (req.session.user) {
     next()

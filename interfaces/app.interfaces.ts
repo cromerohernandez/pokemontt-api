@@ -1,6 +1,9 @@
 export interface IRequest {
   body: any,
-  session: any,
+  session: {
+    user: [any],
+    destroy: () => void,
+  }
 }
 
 export interface IError {
@@ -30,5 +33,4 @@ export interface ISessionRequest extends Express.Request {
     user: [any],
     destroy: () => void,
   }
-  user: any
 }

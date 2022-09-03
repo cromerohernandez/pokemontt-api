@@ -19,6 +19,7 @@ const session = require('./config/session.config');
  * Configure express
  */
 const app = express();
+app.set('trust proxy', 1)
 app.use(cors);
 app.use(logger('dev'));
 app.use(express.json());

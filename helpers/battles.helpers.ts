@@ -1,6 +1,13 @@
 import { IAttackParameters, IBattleMoveData, IBattlePokemonData } from '../interfaces/battle.interfaces';
 import { EFFECTIVENESS_ATTACK_VALUES } from '../const/battle.const';
 
+/**
+ * @description function to get attack damage value
+ * @param attackingPokemon IBattlePokemonData
+ * @param defendingPokemon IBattlePokemonData
+ * @param attackMove IBattleMoveData
+ * @returns number
+ */
 export const getAttackDamage = (
   attackingPokemon: IBattlePokemonData,
   defendingPokemon: IBattlePokemonData,
@@ -22,6 +29,13 @@ export const getAttackDamage = (
   return modifiers * ((attack / defense) + 2)
 }
 
+/**
+ * @description private function to get attack parameters
+ * @param attackingPokemon IBattlePokemonData
+ * @param defendingPokemon IBattlePokemonData
+ * @param attackMove IBattleMoveData
+ * @returns IAttackParameters
+ */
 const _getAttackParameters = (
   attackingPokemon: IBattlePokemonData,
   defendingPokemon: IBattlePokemonData,
@@ -38,6 +52,12 @@ const _getAttackParameters = (
   }
 }
 
+/**
+ * @description private function to get attack effectiveness value
+ * @param attackMoveType string
+ * @param defendingPokemonTypes string[]
+ * @returns number
+ */
 const _getAttackEffectiveness = (attackMoveType: string, defendingPokemonTypes: string[]): number => {
   const effectivenessResults: number[] = []
 

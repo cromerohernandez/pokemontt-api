@@ -18,7 +18,7 @@ module.exports.getUserBattles = (req: Request, res: Response, next: NextFunction
     .sort({ timestamps: 'asc'})
     .then((battles: typeof Battle[]) => {
       if (!battles) {
-        throw createError(404, {en: 'User has no battles.', es: 'El usuario no tiene batallas.'})
+        throw createError(404, 'USER_WITHOUT_BATTLES')
       } else {
         battles.forEach(battle => {
           const win = battle.winner === userId
@@ -40,9 +40,7 @@ module.exports.sendAttack = (req: Request, res: Response, next: NextFunction) =>
   const attackMove = attackingPokemon.moves.find((move: IBattleMoveData) => move.name === attackMoveName)
 
   if (!attackMove) {
-    throw createError(
-      400, `${attackingPokemon.name} doesn't have the ${attackMoveName} move available.`
-    )
+    throw createError(400, 'POKEMON_WITHOUT_SELECTED_MOVE')
   } else {
     const attackDamage = Math.round(getAttackDamage(attackingPokemon, defendingPokemon, attackMove))
     const resultDefendignPokemonHealth = defendingPokemon.hpInBattle - attackDamage
@@ -65,10 +63,12 @@ module.exports.sendAttack = (req: Request, res: Response, next: NextFunction) =>
         {
           id: attackingPokemon.userId ? new Types.ObjectId(attackingPokemon.userId) : null,
           scoreIncrement: attackingPokemonScoreIncrease,
+          battleAction: 'attack',
         },
         {
           id: defendingPokemon.userId ? new Types.ObjectId(defendingPokemon.userId) : null,
           scoreIncrement: defendingPokemonScoreIncrease,
+          battleAction: 'defense',
         }
       ];
 
@@ -77,10 +77,18 @@ module.exports.sendAttack = (req: Request, res: Response, next: NextFunction) =>
           User.findOne({ _id: pokemon.id })
           .then((user: typeof User) => {
             if (!user) {
-              throw createError(404, {en: 'User not found', es: 'Usuario no encontrado'})
+              throw createError(404, 'USER_NOT_FOUND')
             } else {
               const newScore = user.score + pokemon.scoreIncrement
               user.score = newScore
+
+              if(pokemon.battleAction === 'attack') {
+                attackResponse.newAttackingPokemonScore = newScore
+              }
+
+              if(pokemon.battleAction === 'defense') {
+                attackResponse.newDefendingPokemonScore = newScore
+              }
 
               DDBBplayersDataToSave.push(
                 user.save()

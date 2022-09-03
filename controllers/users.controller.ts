@@ -25,7 +25,7 @@ module.exports.updateSettings = (req: Request, res: Response, next: NextFunction
   User.findOne({ _id: req.body.currentUser.id })
     .then((user: typeof User) => {
       if (!user) {
-        throw createError(404, {en: 'User not found', es: 'Usuario no encontrado'})
+        throw createError(404, 'USER_NOT_FOUND')
       } else {
         settingsKeys.forEach(key => {
           if(req.body[key]) {
@@ -47,7 +47,7 @@ module.exports.getUsersRanking = (req: Request, res: Response, next: NextFunctio
     .limit(10)
     .then((users: typeof User[]) => {
       if (!users) {
-        throw createError(404, {en: 'Users not found', es: 'Usuarios no encontrados'})
+        throw createError(404, 'USERS_NOT_FOUND')
       } else {
         const mappedUsers = users.map(user => {
           return {
@@ -67,18 +67,18 @@ module.exports.login = (req: ISessionRequest, res: Response, next: NextFunction)
   const { username, password } = req.body
   
   if (!username || !password) {
-    throw createError(400, 'missing credentials')
+    throw createError(400, 'MISSING_CREDENTIALS')
   }
 
   User.findOne({ username: username })
     .then((user: typeof User) => {
       if (!user) {
-        throw createError(404, 'invalid username or password')
+        throw createError(404, 'INVALID_LOGIN')
       } else {
         return user.checkUserPassword(password)
           .then((match: boolean) => {
             if (!match) {
-              throw createError(400, 'invalid username or password')
+              throw createError(400, 'INVALID_LOGIN')
             } else {
               req.session.user = user
               res.json(user)

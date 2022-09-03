@@ -11,7 +11,7 @@ module.exports = session({
   resave: false,
   saveUninitialized: true,
   cookie: {
-    secure: false,
+    secure: true,
     httpOnly: true,
     maxAge: SESSION_MAX_AGE_SECONDS * 1000
   },

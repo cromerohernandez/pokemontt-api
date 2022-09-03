@@ -28,7 +28,7 @@ interface IMessage {
 }
 
 export interface ISessionRequest extends Express.Request {
-  body: { username: any; password: any; };
+  body: any;
   session: {
     user: [any],
     destroy: () => void,

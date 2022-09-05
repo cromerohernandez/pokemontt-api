@@ -29,8 +29,10 @@ export interface IAttackResponse {
 export interface IBattle {
   id?: Types.ObjectId | null,
   winnerId: Types.ObjectId | null,
+  winnerUserName: String | null,
   winnerScoreIncrement: number,
   loserId: Types.ObjectId | null,
+  loserUserName: String | null,
   loserScoreIncrement: number,
 }
 
@@ -42,6 +44,7 @@ export interface IBattleMoveData {
 
 export interface IBattlePokemonData {
   userId: Types.ObjectId | null,
+  userName: string | null,
   name: string,
   types: string[],
   experience: number,

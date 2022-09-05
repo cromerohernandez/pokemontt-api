@@ -14,22 +14,24 @@ const User = require('../models/user.model');
 module.exports.getUserBattles = (req: Request, res: Response, next: NextFunction) => {
   const userId = req.body.currentUser.id
 
-  Battle.find({ $or: [ {winner: userId}, {loser: userId} ] })
-    .sort({ timestamps: 'asc'})
+  Battle.find({ $or: [ {winnerId: userId}, {loserId: userId} ] })
+    .sort({ createdAt: 'desc'})
+    .limit(10)
     .then((battles: typeof Battle[]) => {
       if (!battles) {
         throw createError(404, 'USER_WITHOUT_BATTLES')
       } else {
-        battles.forEach(battle => {
-          const win = battle.winner === userId
+        const mappedBattles = battles.map(battle => {
+          const win = battle.winnerId == userId //ObjectId vs String
+
           return {
             win: win,
-            opponent: win ? battle.loser : battle.winner,
+            opponentName: win ? battle.loserUserName : battle.winnerUserName,
             userScoreIncrement: win ? battle.winnerScoreIncrement : battle.loserScoreIncrement,
           }
         })
 
-        res.status(200).json(battles)
+        res.status(200).json(mappedBattles)
       }
     })
     .catch(next)
@@ -52,7 +54,7 @@ module.exports.sendAttack = (req: Request, res: Response, next: NextFunction) =>
 
     if (attackResponse.newDefendignPokemonHealth === 0) {
       const attackingPokemonScoreIncrease = WINNER_POINTS_POINTS_IN_COMPUTER_BATTLE + defendingPokemon.hp
-      const defendingPokemonScoreIncrease = attackingPokemon.hp - attackingPokemon.hpInBattle //TODOCRH: review (attackingPokemon.hp don't update (useState))
+      const defendingPokemonScoreIncrease = attackingPokemon.hp - attackingPokemon.hpInBattle ?? 0 //TODOCRH: review (attackingPokemon.hp don't update (useState))
 
       attackResponse.attackingPokemonScoreIncrease = attackingPokemonScoreIncrease
       attackResponse.defendingPokemonScoreIncrease = defendingPokemonScoreIncrease
@@ -102,8 +104,10 @@ module.exports.sendAttack = (req: Request, res: Response, next: NextFunction) =>
       //save battle data
       const battle = new Battle({
         winnerId: attackingPokemon.userId ?? null,
+        winnerUserName: attackingPokemon.userName ?? null,
         winnerScoreIncrement: attackingPokemonScoreIncrease,
         loserId: defendingPokemon.userId ?? null,
+        loserUserName: defendingPokemon.userName ?? null,
         loserScoreIncrement: defendingPokemonScoreIncrease,
       })
 

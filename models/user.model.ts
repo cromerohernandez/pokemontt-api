@@ -8,7 +8,7 @@ import { SALT_WORK_FACTOR } from '../const/user.const';
 const userSchema = new Schema<IUser>({
   username: {
     type: String,
-    required: [true, 'INVALID_PASSWORD'],
+    required: [true, 'INVALID_USERNAME'],
     unique: true,
     inmutable: true,
     trim: true,

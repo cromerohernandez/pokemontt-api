@@ -11,7 +11,7 @@ router.get('/users/ranking', authMiddleware.isAuthenticated, usersController.get
 router.patch('/users/update/settings',authMiddleware.isAuthenticated, usersController.updateSettings);
 
 //battles
-router.get('/battles/user', authMiddleware.isAuthenticated, battlesController.getUserBattles);
+router.get('/battles/history', authMiddleware.isAuthenticated, battlesController.getUserBattles);
 router.post('/battles/attack', authMiddleware.isAuthenticated, battlesController.sendAttack);
 
 //sessions

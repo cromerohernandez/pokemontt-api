@@ -5,6 +5,10 @@ import { IBattle } from '../interfaces/battle.interfaces'
 const userBattle = new Schema<IBattle>({
   winnerId: {
     type: Types.ObjectId,
+    ref: 'User',
+  },
+  winnerUserName: {
+    type: String,
   },
   winnerScoreIncrement: {
     type: Number,
@@ -12,6 +16,10 @@ const userBattle = new Schema<IBattle>({
   },
   loserId: {
     type: Types.ObjectId,
+    ref: 'User',
+  },
+  loserUserName: {
+    type: String,
   },
   loserScoreIncrement: {
     type: Number,

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { IError, IErrorData, IRequest, ISessionRequest } from './interfaces/app.interfaces';
+import { IError, IErrorData, ISessionRequest } from './interfaces/app.interfaces';
 
 require('dotenv').config();
 

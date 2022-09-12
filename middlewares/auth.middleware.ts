@@ -10,14 +10,10 @@ const createError = require('http-errors');
  * @param next NextFunction
  */
 module.exports.isAuthenticated = (req: ISessionRequest, res: Response, next: NextFunction) => {
-  if ((process.env.NODE_ENV === 'dev')) { //TODOCRH: review
-    if (req.session.user) {
-      next()
-    } else {
-      next(createError(401, 'USER_NOT_AUTHENTICATED'))
-    }
-  } else {
+  if (req.session.user) {
     next()
+  } else {
+    next(createError(401, 'USER_NOT_AUTHENTICATED'))
   }
 };
 
@@ -27,12 +23,8 @@ module.exports.isAuthenticated = (req: ISessionRequest, res: Response, next: Nex
  * @param next NextFunction
  */
 module.exports.isNotAuthenticated = (req: ISessionRequest, res: Response, next: NextFunction) => {
-  if ((process.env.NODE_ENV === 'dev')) { //TODOCRH: review
-    if (req.session.user) {
-      next(createError(403, 'USER_ALREADY_AUTHENTICATED'))
-    } else {
-      next()
-    }
+  if (req.session.user) {
+    next(createError(403, 'USER_ALREADY_AUTHENTICATED'))
   } else {
     next()
   }

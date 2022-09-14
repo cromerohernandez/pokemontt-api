@@ -4,7 +4,7 @@ const corsMiddleware = cors({
   origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
   //allowedHeaders: ['Content-Type', 'origin'],
   //headers: {'Access-Control-Allow-Origin': 'http://localhost:5000'}, //'https://pokemontt-api.netlify.app'},
-  header: ('Access-Control-Allow-Origin: *'),
+  headers: ('Access-Control-Allow-Origin: *'),
   methods: ['GET', 'POST', 'PATCH'],
   optionsSuccessStatus: 200,
   credentials: true,

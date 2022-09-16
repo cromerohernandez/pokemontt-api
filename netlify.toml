@@ -10,3 +10,4 @@
   for = "/*"
     [headers.values]
     Access-Control-Allow-Origin = 'https://pokemontt-arena.netlify.app'
+    Access-Control-Allow-Credentials = 'true'

@@ -16,6 +16,7 @@ module.exports = session({
   },
   store: new MongoStore({
     mongoUrl: mongodbConnection,
+    db: 'sessions',
     mongooseConnection: mongoose.connection,
     ttl: SESSION_MAX_AGE_SECONDS
   }),

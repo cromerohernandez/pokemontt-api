@@ -10,7 +10,7 @@ module.exports = session({
   resave: true,
   saveUninitialized: true,
   cookie: {
-    secure: process.env.NODE_ENV === 'prod',
+    secure: false,
     httpOnly: true,
     maxAge: SESSION_MAX_AGE_SECONDS * 1000
   },
@@ -19,5 +19,4 @@ module.exports = session({
     mongooseConnection: mongoose.connection,
     ttl: SESSION_MAX_AGE_SECONDS
   }),
-  user: null
 })

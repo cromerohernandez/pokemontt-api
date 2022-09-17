@@ -28,7 +28,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session);
 
 app.use((req: ISessionRequest, res: Response, next: any) => {
+  console.log('CRH-req.session.user', req.session.user)
+
   req.body.currentUser = req.session.user
+
+  console.log('CRH-req.body.currentUser', req.body.currentUser)
+
   next()
 });
 

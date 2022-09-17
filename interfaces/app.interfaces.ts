@@ -30,7 +30,7 @@ interface IMessage {
 }
 
 export interface ISession extends Session {
-  user: any;
+  userId: any;
 }
 
 export interface ISessionRequest extends Request {

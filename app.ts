@@ -12,7 +12,7 @@ const mongoose = require('mongoose');
 
 require('./config/db.config');
 
-const passportConfig = require('./config/passport.config');
+const passport = require('passport');
 const session = require('./config/session.config');
 const cors = require('./config/cors.config');
 
@@ -27,7 +27,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session);
-app.use(passportConfig);
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use((req: ISessionRequest, res: Response, next: any) => {
   console.log('CRH-req.session.user', req.session.user)

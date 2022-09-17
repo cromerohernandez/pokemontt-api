@@ -26,13 +26,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-if (process.env.NODE_ENV === 'prod') {
-  //Set static folder
-  app.use(express.static('client/dist'));
-  app.get('*', (req: Request, res: Response) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
-  });
-}
 app.use(session);
 app.use(passport.initialize());
 app.use(passport.session());

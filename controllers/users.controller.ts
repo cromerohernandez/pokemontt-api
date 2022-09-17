@@ -63,7 +63,7 @@ module.exports.getUsersRanking = (req: Request, res: Response, next: NextFunctio
 }
 
 
-module.exports.login = (req: ISessionRequest, res: Response, next: NextFunction) => {
+module.exports.login = (req: ISessionRequest, res: { json: (arg0: any) => void; }, next: NextFunction) => {
   const { username, password } = req.body
   
   if (!username || !password) {
@@ -81,7 +81,7 @@ module.exports.login = (req: ISessionRequest, res: Response, next: NextFunction)
               throw createError(400, 'INVALID_LOGIN')
             } else {
               req.session.user = user
-              req.session.save()
+              req.cookie('foo', 'bar')
               res.json(user)
             }
           })

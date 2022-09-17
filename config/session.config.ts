@@ -3,7 +3,6 @@ const MongoStore = require('connect-mongo');
 import mongoose from 'mongoose';
 
 let mongodbConnection = (process.env.NODE_ENV === 'dev') ? 'mongodb://localhost:27017/pokemontt' : process.env.MONGODB_URI
-
 const SESSION_MAX_AGE_SECONDS = Number(process.env.SESSION_MAX_AGE_SECONDS) || 60 * 60 * 24 // 1 day
 
 module.exports = session({
@@ -11,7 +10,7 @@ module.exports = session({
   resave: true,
   saveUninitialized: true,
   cookie: {
-    secure: false,
+    secure: process.env.NODE_ENV === 'prod',
     httpOnly: true,
     maxAge: SESSION_MAX_AGE_SECONDS * 1000
   },
@@ -19,5 +18,6 @@ module.exports = session({
     mongoUrl: mongodbConnection,
     mongooseConnection: mongoose.connection,
     ttl: SESSION_MAX_AGE_SECONDS
-  })
+  }),
+  user: null
 })

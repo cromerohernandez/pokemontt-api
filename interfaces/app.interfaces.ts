@@ -1,3 +1,5 @@
+import { Session } from "express-session";
+
 export interface IRequest {
   body: any,
   session: {
@@ -27,11 +29,12 @@ interface IMessage {
   [x: string]: string
 }
 
-export interface ISessionRequest extends Express.Request {
+export interface ISession extends Session {
+  user: any;
+}
+
+export interface ISessionRequest extends Request {
   [x: string]: any;
   body: any;
-  session: {
-    user: [any],
-    destroy: () => void,
-  }
+  session: ISession
 }

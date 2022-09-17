@@ -92,6 +92,6 @@ module.exports.login = (req: ISessionRequest, res: Response, next: NextFunction)
 }
 
 module.exports.logout = (req: ISessionRequest, res: Response) => {
-  req.session.destroy
+  req.session.destroy(null)
   res.status(204).json()
 }

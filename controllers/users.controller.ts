@@ -92,6 +92,6 @@ module.exports.login = (req: ISessionRequest, res: Response, next: NextFunction)
 }
 
 module.exports.logout = (req: ISessionRequest, res: Response) => {
-  req.session.destroy(null)
+  req.session.destroy((error: any) => console.log('CRH-error', error))
   res.status(204).json()
 }

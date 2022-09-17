@@ -10,12 +10,11 @@ const createError = require('http-errors');
  * @param next NextFunction
  */
 module.exports.isAuthenticated = (req: ISessionRequest, res: Response, next: NextFunction) => {
-  //if (req.session.user) {
+  if (req.session.user) {
     next()
-  /*TODO CRH:
   } else {
     next(createError(401, 'USER_NOT_AUTHENTICATED'))
-  }*/
+  }
 };
 
 /**
@@ -24,10 +23,9 @@ module.exports.isAuthenticated = (req: ISessionRequest, res: Response, next: Nex
  * @param next NextFunction
  */
 module.exports.isNotAuthenticated = (req: ISessionRequest, res: Response, next: NextFunction) => {
-  /*TODO CRH:
   if (req.session.user) {
     next(createError(403, 'USER_ALREADY_AUTHENTICATED'))
-  } else {*/
+  } else {
     next()
-  //}
+  }
 };

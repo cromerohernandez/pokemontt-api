@@ -33,7 +33,7 @@ app.use(passport.session());
 app.use((req: ISessionRequest, res: Response, next: any) => {
   console.log('CRH-req.session', req.session)
 
-  req.body.currentUser = req.session.userId
+  req.body.currentUser = req.session.user
 
   console.log('CRH-req.body.currentUser', req.body.currentUser)
 

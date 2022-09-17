@@ -13,6 +13,7 @@ module.exports.isAuthenticated = (req: ISessionRequest, res: Response, next: Nex
   if (req.session.user) {
     next()
   } else {
+    console.log('CRH-req', req)
     next(createError(401, 'USER_NOT_AUTHENTICATED'))
   }
 };

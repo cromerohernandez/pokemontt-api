@@ -63,7 +63,7 @@ module.exports.getUsersRanking = (req: Request, res: Response, next: NextFunctio
 }
 
 
-module.exports.login = (req: ISessionRequest, res: { json: (arg0: any) => void; }, next: NextFunction) => {
+module.exports.login = (req: ISessionRequest, res: { json: (arg0: any) => void; cookie: () => void }, next: NextFunction) => {
   const { username, password } = req.body
   
   if (!username || !password) {

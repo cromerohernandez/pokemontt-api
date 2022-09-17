@@ -32,7 +32,6 @@ export interface ISessionRequest extends Express.Request {
   body: any;
   session: {
     user: [any],
-    save: () => void,
     destroy: () => void,
   }
 }

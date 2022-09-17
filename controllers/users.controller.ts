@@ -6,6 +6,14 @@ import { IUser } from '../interfaces/user.interfaces';
 
 const User = require('../models/user.model');
 
+
+//TODO CRH:
+declare module 'express-session' {
+  interface SessionData {
+    user: any;
+  }
+}
+
 module.exports.create = (req: Request, res: Response, next: NextFunction) => {
   const { username, password } = req.body
 
@@ -63,7 +71,7 @@ module.exports.getUsersRanking = (req: Request, res: Response, next: NextFunctio
 }
 
 
-module.exports.login = (req: ISessionRequest, res: Response, next: NextFunction) => {
+module.exports.login = (req: Request, res: Response, next: NextFunction) => {
   const { username, password } = req.body
   
   if (!username || !password) {
@@ -90,7 +98,7 @@ module.exports.login = (req: ISessionRequest, res: Response, next: NextFunction)
     .catch(next)
 }
 
-module.exports.logout = (req: ISessionRequest, res: Response) => {
+module.exports.logout = (req: Request, res: Response) => {
   req.session.destroy()
   res.status(204).json()
 }

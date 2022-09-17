@@ -5,6 +5,7 @@ require('dotenv').config();
 
 const cookieParser = require('cookie-parser');
 const createError = require('http-errors');
+const serverless = require('serverless-http');
 const express = require('express');
 const logger = require('morgan');
 const path = require('path');
@@ -109,3 +110,6 @@ function normalizePort(val: string) {
 
   return false;
 }
+
+module.exports = app;
+module.exports.handler = serverless(app);

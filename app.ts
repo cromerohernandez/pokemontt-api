@@ -12,8 +12,9 @@ const mongoose = require('mongoose');
 
 require('./config/db.config');
 
-const cors = require('./config/cors.config');
+const passportConfig = require('./config/passport.config');
 const session = require('./config/session.config');
+const cors = require('./config/cors.config');
 
 /** 
  * Configure express
@@ -27,6 +28,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('trust proxy', 1);
 app.use(session);
+app.use(passportConfig);
 
 app.use((req: ISessionRequest, res: Response, next: any) => {
   console.log('CRH-req.session.user', req.session.user)

@@ -29,8 +29,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session);
 app.use(passport.initialize());
 app.use(passport.session());
-app.enable('trust proxy');
-
 
 app.use((req: ISessionRequest, res: Response, next: any) => {
   console.log('CRH-req.session', req.session)

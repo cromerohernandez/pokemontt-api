@@ -28,6 +28,7 @@ interface IMessage {
 }
 
 export interface ISessionRequest extends Express.Request {
+  [x: string]: any;
   body: any;
   session: {
     user: [any],

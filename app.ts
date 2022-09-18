@@ -34,7 +34,7 @@ if (process.env.NODE_ENV === 'prod') {
   app.set('trust proxy', 1);
 }
 
-app.use((req: ISessionRequest, res: Response, next: any) => {
+app.use((req: ISessionRequest, _: Response, next: any) => {
   req.body.currentUser = req.session.user
   next()
 });
@@ -46,12 +46,12 @@ const router = require('./config/routes');
 app.use('/', router);
 
 // catch 404 and forward to error handler
-app.use((req: Request, res: Response, next: NextFunction) => {
+app.use((req: Request, _: Response, next: NextFunction) => {
   next(createError(404));
 });
 
 // error handler
-app.use(function (error: IError, req: Request, res: Response, next: NextFunction) {
+app.use(function (error: IError, _: Request, res: Response, next: NextFunction) {
   console.error(error);
 
   res.status(error.status || 500);

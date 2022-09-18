@@ -1,9 +1,0 @@
-[build]
-  functions = "functions"
-
-[[headers]]
-  for = "/*"
-    [headers.values]
-    Access-Control-Allow-Origin = 'https://pokemontt-arena.netlify.app'
-    Access-Control-Allow-Credentials = 'true'
-    Access-Control-Allow-Headers = 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, Origin'

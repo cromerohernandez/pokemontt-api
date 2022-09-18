@@ -11,7 +11,7 @@ module.exports = session({
   saveUninitialized: true,
   proxy: process.env.NODE_ENV === 'prod' ? true : false,
   cookie: {
-    secure: process.env.NODE_ENV === 'prod' ? true : false,
+    secure: false, //process.env.NODE_ENV === 'prod' ? true : false,
     httpOnly: true,
     maxAge: SESSION_MAX_AGE_SECONDS * 1000,
     sameSite: process.env.NODE_ENV === 'prod' ? 'none' : false,

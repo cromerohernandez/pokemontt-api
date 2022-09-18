@@ -11,10 +11,10 @@ module.exports = session({
   saveUninitialized: true,
   proxy: true,
   cookie: {
-    path: '/',
     secure: true,
     httpOnly: true,
-    maxAge: SESSION_MAX_AGE_SECONDS * 1000
+    maxAge: SESSION_MAX_AGE_SECONDS * 1000,
+    sameSite: 'none'
   },
   store: new MongoStore({
     mongoUrl: mongodbConnection,

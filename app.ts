@@ -28,16 +28,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session);
 app.use(passport.initialize());
-app.set('trust proxy', 1);
+//app.set('trust proxy', 1);
 app.use(passport.session());
 
 app.use((req: ISessionRequest, res: Response, next: any) => {
-  console.log('CRH-req.session', req.session)
-
   req.body.currentUser = req.session.user
-
-  console.log('CRH-req.body.currentUser', req.body.currentUser)
-
   next()
 });
 
@@ -54,7 +49,6 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 // error handler
 app.use(function (error: IError, req: Request, res: Response, next: NextFunction) {
-  //console.error('-' * 1000) //TODOCRH: review
   console.error(error);
 
   res.status(error.status || 500);

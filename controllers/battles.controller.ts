@@ -54,7 +54,7 @@ module.exports.sendAttack = (req: Request, res: Response, next: NextFunction) =>
 
     if (attackResponse.newDefendignPokemonHealth === 0) {
       const attackingPokemonScoreIncrease = WINNER_POINTS_POINTS_IN_COMPUTER_BATTLE + defendingPokemon.hp
-      const defendingPokemonScoreIncrease = attackingPokemon.hp - attackingPokemon.hpInBattle ?? 0 //TODOCRH: review (attackingPokemon.hp don't update (useState))
+      const defendingPokemonScoreIncrease = attackingPokemon.hp - attackingPokemon.hpInBattle ?? 0
 
       attackResponse.attackingPokemonScoreIncrease = attackingPokemonScoreIncrease
       attackResponse.defendingPokemonScoreIncrease = defendingPokemonScoreIncrease

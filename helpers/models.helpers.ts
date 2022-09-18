@@ -19,7 +19,7 @@ export const checkPassword = (password: string, userPassword: string): boolean =
  * @param next NextFunction
  * @param user IUser
  */
-export const hashPassword = (next: NextFunction, user: IUser): void => { //TODO CRH: it is necessary?
+export const hashPassword = (next: NextFunction, user: IUser): void => {
   bcrypt.genSalt(SALT_WORK_FACTOR)
     .then((salt: string) => {
       return bcrypt.hash(user.password, salt)

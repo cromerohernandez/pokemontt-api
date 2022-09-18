@@ -28,8 +28,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session);
 app.use(passport.initialize());
-app.set('trust proxy', 1);
 app.use(passport.session());
+
+if (process.env.NODE_ENV === 'prod') {
+  app.set('trust proxy', 1);
+}
 
 app.use((req: ISessionRequest, res: Response, next: any) => {
   req.body.currentUser = req.session.user

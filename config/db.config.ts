@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
-let mongodbConnection = (process.env.NODE_ENV === 'dev') ? 'mongodb://localhost:27017/pokemontt' : process.env.MONGODB_URI
-let mongodbNameConnection = (process.env.NODE_ENV === 'dev') ? 'mongodb://localhost:27017/pokemontt' : 'mongodb-atlas-pokemontt'
+let mongodbConnection = process.env.MONGODB_URI
+let mongodbNameConnection = 'mongodb-atlas-pokemontt'
 
 mongoose.connect(mongodbConnection, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.info(`Successfully connected to the database ${mongodbNameConnection}`))

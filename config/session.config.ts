@@ -10,6 +10,7 @@ module.exports = session({
   resave: false,
   saveUninitialized: true,
   cookie: {
+    path: '/',
     secure: false,
     httpOnly: true,
     maxAge: SESSION_MAX_AGE_SECONDS * 1000

@@ -9,6 +9,7 @@ module.exports = session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
+  proxy: true,
   cookie: {
     path: '/',
     secure: false,

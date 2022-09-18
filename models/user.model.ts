@@ -36,7 +36,7 @@ const userSchema = new Schema<IUser>({
   render: {
     type: String,
     enum: ['canvas', 'html'],
-    default: 'html'
+    default: 'canvas'
   }
 }, {
   timestamps: true,

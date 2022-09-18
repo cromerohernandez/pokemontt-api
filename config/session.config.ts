@@ -14,7 +14,7 @@ module.exports = session({
     secure: process.env.NODE_ENV === 'prod' ? true : false,
     httpOnly: true,
     maxAge: SESSION_MAX_AGE_SECONDS * 1000,
-    //sameSite: process.env.NODE_ENV === 'prod' ? 'none' : false,
+    sameSite: true,//process.env.NODE_ENV === 'prod' ? 'none' : false,
   },
   store: new MongoStore({
     mongoUrl: mongodbConnection,

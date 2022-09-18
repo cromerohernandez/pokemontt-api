@@ -11,10 +11,8 @@ const createError = require('http-errors');
  */
 module.exports.isAuthenticated = (req: ISessionRequest, res: Response, next: NextFunction) => {
   if (req.session.user) {
-    console.log('CRH-req1', req.session)
     next()
   } else {
-    console.log('CRH-req2', req.session)
     next(createError(401, 'USER_NOT_AUTHENTICATED'))
   }
 };
@@ -26,10 +24,8 @@ module.exports.isAuthenticated = (req: ISessionRequest, res: Response, next: Nex
  */
 module.exports.isNotAuthenticated = (req: ISessionRequest, res: Response, next: NextFunction) => {
   if (req.session.user) {
-    console.log('CRH-req1Not', req.session)
     next(createError(403, 'USER_ALREADY_AUTHENTICATED'))
   } else {
-    console.log('CRH-req2Not', req.session)
     next()
   }
 };

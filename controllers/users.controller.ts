@@ -82,7 +82,6 @@ module.exports.login = (req: ISessionRequest, res: Response, next: NextFunction)
               throw createError(400, 'INVALID_LOGIN')
             } else {
               req.session.user = user
-              console.log('CRH-LOGINsession', req.session)
               req.session.save()
               res.json(user)
             }
@@ -92,7 +91,7 @@ module.exports.login = (req: ISessionRequest, res: Response, next: NextFunction)
     .catch(next)
 }
 
-module.exports.logout = (req: ISessionRequest, res: Response) => {
-  req.session.destroy((error: any) => console.log('CRH-error', error))
+module.exports.logout = (req: ISessionRequest, res: Response, next: NextFunction) => {
+  req.session.destroy((error: any) => next(error))
   res.status(204).json()
 }

@@ -30,9 +30,9 @@ app.use(session);
 app.use(passport.initialize());
 app.use(passport.session());
 
-if (process.env.NODE_ENV === 'prod') {
+/*if (process.env.NODE_ENV === 'prod') {
   app.set('trust proxy', 1);
-}
+}*/
 
 app.use((req: ISessionRequest, _: Response, next: any) => {
   req.body.currentUser = req.session.user
